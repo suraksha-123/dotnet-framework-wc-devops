@@ -6,7 +6,8 @@ resources:
 
 variables:
   # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: 'e6d37d39-1590-4060-bcec-b2aca3af5143'
+  dockerRegistryServiceConnection: 'your-auto-populated-service-connection-number'
+  azureSubscriptionName: 'your-azure-subscription-name'
   dockerfilePath: '$(Build.SourcesDirectory)/taskapp/taskapp/Dockerfile'
   tag: '$(Build.BuildId)'
   
@@ -44,13 +45,13 @@ stages:
 
     - task: AzureWebAppContainer@1
       inputs:
-        azureSubscription: 'Demo Three Subscription(7e574780-0f87-42e8-af8c-5e8cb7d3540a)'
+        azureSubscription: '$(azureSubscriptionName)'
         appName: '$(applicationName)'
         containers: '$(containerRegistry)/$(imageRepository):$(tag)'
 
     - task: SqlAzureDacpacDeployment@1
       inputs:
-        azureSubscription: 'Demo Three Subscription(7e574780-0f87-42e8-af8c-5e8cb7d3540a)'
+        azureSubscription: '$(azureSubscriptionName)'
         AuthenticationType: 'connectionString'
         ConnectionString: '$(azureSQLConnectionString)'
         deployType: 'DacpacTask'
