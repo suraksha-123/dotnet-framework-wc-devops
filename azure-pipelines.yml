@@ -1,0 +1,59 @@
+trigger:
+- master
+
+resources:
+- repo: self
+
+variables:
+  # Container registry service connection established during pipeline creation
+  dockerRegistryServiceConnection: 'e6d37d39-1590-4060-bcec-b2aca3af5143'
+  dockerfilePath: '$(Build.SourcesDirectory)/taskapp/taskapp/Dockerfile'
+  tag: '$(Build.BuildId)'
+  
+  # Agent VM image name
+  vmImageName: 'windows-latest'
+
+stages:
+- stage: Build
+  displayName: Build and push stage
+  jobs:  
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: Docker@2
+      displayName: Build and push an image to container registry
+      inputs:
+        command: buildAndPush
+        repository: '$(imageRepository)'
+        dockerfile: $(dockerfilePath)
+        containerRegistry: '$(dockerRegistryServiceConnection)'
+        buildContext: .
+        tags: |
+          $(tag)
+  
+- stage: Deploy
+  displayName: Deploy to App Service and Azure SQL
+  jobs:
+  - job: Deploy
+    displayName: Deploy
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+
+    - task: AzureWebAppContainer@1
+      inputs:
+        azureSubscription: 'Demo Three Subscription(7e574780-0f87-42e8-af8c-5e8cb7d3540a)'
+        appName: '$(applicationName)'
+        containers: '$(containerRegistry)/$(imageRepository):$(tag)'
+
+    - task: SqlAzureDacpacDeployment@1
+      inputs:
+        azureSubscription: 'Demo Three Subscription(7e574780-0f87-42e8-af8c-5e8cb7d3540a)'
+        AuthenticationType: 'connectionString'
+        ConnectionString: '$(azureSQLConnectionString)'
+        deployType: 'DacpacTask'
+        DeploymentAction: 'Publish'
+        DacpacFile: '$(Build.SourcesDirectory)/data.dacpac'
+        IpDetectionMethod: 'AutoDetect'
