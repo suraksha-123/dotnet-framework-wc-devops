@@ -28,4 +28,4 @@ To add a Variable, you click the **Variables** button next to the *Save* button 
 - `azureSQLConnectionString`: database-connection-string (Optional)
   
 ## Commit Changes
-The `main.yaml` file is set to trigger on any pushes to master, so when you commit your changes the build will run.  View the **Actions** tab in your repository to view the build and any potential errors.
+The `azure-pipelines.yaml` file is set to trigger on any pushes to master, so when you commit your changes the build will run.  
