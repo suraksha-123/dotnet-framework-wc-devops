@@ -2,7 +2,7 @@
 A containerized (Windows) .NET Framework sample application setup with continuous deployment through **Azure DevOps** to Azure App Service. Follow the directions below to get started.
 
 ## Fork the Repository
-Fork this repository or import it into your Azure DevOps repository. 
+Fork this repository or import the project into your Azure DevOps repository using the clone link. 
 
 ## Create Resources
 Create the following resources. You will need information from each resource that will be used in the pipeline file and stored as a variable. Create your choice of registry (Azure Container Registry or Docker Hub) first since you will need information from there before you can create your App Service.
