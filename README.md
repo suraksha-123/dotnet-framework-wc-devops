@@ -9,7 +9,7 @@ Create the following resources. You will need information from each resource tha
 
 1. Azure Container Registry OR Docker Hub repository
 2. App Service (Web App for Container)
-3. .NET Framework application with supporting dockerfile in a GitHub repository
+3. .NET Framework application with supporting dockerfile in an Azure DevOps repository
 4. Azure SQL Database (Optional)
 
 ## Add a Service Connection
